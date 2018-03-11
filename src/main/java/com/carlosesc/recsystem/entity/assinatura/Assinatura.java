@@ -1,9 +1,10 @@
 package com.carlosesc.recsystem.entity.assinatura;
 
+import com.carlosesc.recsystem.entity.EntityClass;
 import com.carlosesc.recsystem.entity.cliente.Cliente;
 import com.carlosesc.recsystem.entity.servico.Servico;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.*;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
@@ -14,26 +15,14 @@ import javax.validation.constraints.NotNull;
 import java.util.Date;
 
 @Entity
-@EqualsAndHashCode
-@ToString
+@Data
 @EntityListeners(AuditingEntityListener.class)
-public class Assinatura {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
+public class Assinatura extends EntityClass {
 
     @NotNull
     @Enumerated(EnumType.STRING)
     private Status status;
-
-    @NotNull
-    @CreatedDate
-    private Date criacao;
-
-    @NotBlank
-    @LastModifiedDate
-    private Date ultimaAlteracao;
 
     @NotNull
     private Integer aniversario;
@@ -43,33 +32,10 @@ public class Assinatura {
     @JoinColumn(foreignKey = @ForeignKey(name = "cliente_servico_fk"))
     private Servico servico;
 
-    @NotNull
-    @ManyToOne(cascade = CascadeType.MERGE)
-    @JoinColumn(foreignKey = @ForeignKey(name = "cliente_assinatura_fk"))
-    private Cliente cliente;
-
     public Assinatura(Integer aniversario,
-                      Servico servico,
-                      Cliente cliente) {
+                      Servico servico) {
         this.aniversario = aniversario;
         this.servico = servico;
-        this.cliente = cliente;
         this.status = Status.ATIVO;
-    }
-
-    public Status getStatus() {
-        return status;
-    }
-
-    public Integer getAniversario() {
-        return aniversario;
-    }
-
-    public Servico getServico() {
-        return servico;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
     }
 }

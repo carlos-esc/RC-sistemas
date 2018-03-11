@@ -1,25 +1,20 @@
 package com.carlosesc.recsystem.entity.cliente;
 
+import com.carlosesc.recsystem.entity.EntityClass;
 import com.carlosesc.recsystem.entity.assinatura.Assinatura;
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 import java.util.List;
 
+@Data
 @Entity
-@EqualsAndHashCode
-@ToString
-public class Cliente {
-
-    @Id
-    @GeneratedValue(strategy= GenerationType.AUTO)
-    private Long id;
+@NoArgsConstructor(access = AccessLevel.PUBLIC)
+public class Cliente extends EntityClass {
 
     @NotBlank
     private String nome;
@@ -30,24 +25,16 @@ public class Cliente {
     @NotBlank
     private String email;
 
-    @NotBlank
-    @CreatedDate
-    private Date criacao;
-
-    @NotBlank
-    @LastModifiedDate
-    private Date ultimaAlteracao;
-
-    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.EAGER, mappedBy = "cliente")
+    @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
+    @JoinColumn(name = "CLIENTE_ID", foreignKey = @ForeignKey(name = "cliente_assinatura_fk"))
     private List<Assinatura> assinaturas;
 
-    @NotNull
     @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(foreignKey = @ForeignKey(name = "enderecoFk"))
+    @JoinColumn(foreignKey = @ForeignKey(name = "cliente_endereco_fk"))
     private Endereco endereco;
 
-    @NotNull
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "cliente")
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "CLIENTE_ID", foreignKey = @ForeignKey(name = "cliente_contato_fk"))
     private List<Contato> contatos;
 
     public Cliente(String nome,
@@ -62,29 +49,5 @@ public class Cliente {
         this.assinaturas = assinaturas;
         this.contatos = contatos;
         this.endereco = endereco;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public List<Assinatura> getAssinaturas() {
-        return assinaturas;
-    }
-
-    public List<Contato> getContatos() {
-        return contatos;
-    }
-
-    public Endereco getEndereco() {
-        return endereco;
     }
 }

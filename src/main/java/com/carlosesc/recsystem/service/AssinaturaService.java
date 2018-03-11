@@ -14,6 +14,6 @@ public class AssinaturaService {
     private AssinaturaRepository assinaturaRepository;
 
     public void assinar(Integer aniversario, Cliente cliente, Servico servico) {
-        assinaturaRepository.save(new Assinatura(aniversario, servico, cliente));
+        assinaturaRepository.save(new Assinatura(aniversario, servico));
     }
 }
