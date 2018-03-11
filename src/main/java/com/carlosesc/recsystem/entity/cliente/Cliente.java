@@ -2,18 +2,21 @@ package com.carlosesc.recsystem.entity.cliente;
 
 import com.carlosesc.recsystem.entity.EntityClass;
 import com.carlosesc.recsystem.entity.assinatura.Assinatura;
+import com.carlosesc.recsystem.entity.servico.Servico;
 import lombok.AccessLevel;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
-@Data
 @Entity
-@NoArgsConstructor(access = AccessLevel.PUBLIC)
+@NoArgsConstructor(access = AccessLevel.PACKAGE)
+@Getter
 public class Cliente extends EntityClass {
 
     @NotBlank
@@ -27,7 +30,7 @@ public class Cliente extends EntityClass {
 
     @OneToMany(cascade = CascadeType.MERGE, fetch = FetchType.LAZY)
     @JoinColumn(name = "CLIENTE_ID", foreignKey = @ForeignKey(name = "cliente_assinatura_fk"))
-    private List<Assinatura> assinaturas;
+    private List<Assinatura> assinaturas = new ArrayList<>();
 
     @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(foreignKey = @ForeignKey(name = "cliente_endereco_fk"))
@@ -41,13 +44,16 @@ public class Cliente extends EntityClass {
                    String cpf,
                    String email,
                    Endereco endereco,
-                   List<Assinatura> assinaturas,
                    List<Contato> contatos) {
         this.nome = nome;
         this.cpf = cpf;
         this.email = email;
-        this.assinaturas = assinaturas;
         this.contatos = contatos;
         this.endereco = endereco;
+    }
+
+    public void assinar(Servico servico) {
+        int aniversario = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+        assinaturas.add(new Assinatura(aniversario, servico));
     }
 }

@@ -2,6 +2,8 @@ package com.carlosesc.recsystem.service;
 
 import com.carlosesc.recsystem.entity.cliente.Cliente;
 import com.carlosesc.recsystem.entity.cliente.ClienteRepository;
+import com.carlosesc.recsystem.entity.servico.Servico;
+import com.carlosesc.recsystem.service.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
@@ -23,14 +25,12 @@ public class ClienteService {
         return clienteRepository.findById(id);
     }
 
-    public List<Cliente> buscarPorNome(String nome) {
-        Cliente cliente = new Cliente();
-        cliente.setNome(nome);
-        Example<Cliente> clienteExample = Example.of(cliente);
-        return clienteRepository.findAll(clienteExample);
-    }
-
     public List<Cliente> buscarTodos() {
         return clienteRepository.findAll();
+    }
+
+    public void assinar(Cliente cliente, Servico servico) {
+        cliente.assinar(servico);
+        clienteRepository.save(cliente);
     }
 }

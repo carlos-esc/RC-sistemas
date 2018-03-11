@@ -1,0 +1,1 @@
+insert into servico(criacao, ultima_alteracao, descricao, valor) values (NOW(), NOW(), 'Mensal Kit Segurança', 25);
