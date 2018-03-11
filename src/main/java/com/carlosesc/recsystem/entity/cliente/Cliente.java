@@ -53,6 +53,7 @@ public class Cliente {
     public Cliente(String nome,
                    String cpf,
                    String email,
+                   Endereco endereco,
                    List<Assinatura> assinaturas,
                    List<Contato> contatos) {
         this.nome = nome;
@@ -60,6 +61,7 @@ public class Cliente {
         this.email = email;
         this.assinaturas = assinaturas;
         this.contatos = contatos;
+        this.endereco = endereco;
     }
 
     public String getNome() {
@@ -80,5 +82,9 @@ public class Cliente {
 
     public List<Contato> getContatos() {
         return contatos;
+    }
+
+    public Endereco getEndereco() {
+        return endereco;
     }
 }
