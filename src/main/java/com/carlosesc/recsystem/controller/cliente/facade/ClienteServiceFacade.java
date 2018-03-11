@@ -1,7 +1,9 @@
 package com.carlosesc.recsystem.controller.cliente.facade;
 
-import com.carlosesc.recsystem.controller.cliente.facade.to.*;
-import com.carlosesc.recsystem.controller.servico.facade.to.ServicoTO;
+import com.carlosesc.recsystem.controller.cliente.facade.to.ClienteTO;
+import com.carlosesc.recsystem.controller.cliente.facade.to.CriarClienteTO;
+import com.carlosesc.recsystem.controller.cliente.facade.to.EnderecoTO;
+import com.carlosesc.recsystem.controller.cliente.facade.to.assembler.ClienteAssembler;
 import com.carlosesc.recsystem.entity.cliente.Cliente;
 import com.carlosesc.recsystem.entity.cliente.Contato;
 import com.carlosesc.recsystem.entity.cliente.Endereco;
@@ -12,7 +14,6 @@ import com.carlosesc.recsystem.service.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -48,7 +49,7 @@ public class ClienteServiceFacade {
 
     public Optional<ClienteTO> carregar(long clienteId) {
         return clienteService.carregar(clienteId)
-                .map(cliente -> Optional.of(mapClienteTO(cliente)))
+                .map(cliente -> Optional.of(ClienteAssembler.mapClienteTO(cliente)))
                 .orElse(Optional.empty());
     }
 
@@ -65,47 +66,7 @@ public class ClienteServiceFacade {
     public List<ClienteTO> buscarTodos() {
         return clienteService.buscarTodos()
                 .stream()
-                .map(this::mapClienteTO)
+                .map(ClienteAssembler::mapClienteTO)
                 .collect(toList());
     }
-
-    private ClienteTO mapClienteTO(Cliente cliente) {
-        List<ContatoTO> contatoTOs = new ArrayList<>();
-
-        cliente.getContatos()
-                .forEach(contato -> {
-                    ContatoTO contatoTO = new ContatoTO();
-                    contatoTO.setNumero(contato.getNumero());
-                    contatoTOs.add(contatoTO);
-                });
-
-        EnderecoTO enderecoTO = new EnderecoTO();
-        Endereco endereco = cliente.getEndereco();
-        enderecoTO.setCep(endereco.getCep());
-        enderecoTO.setDescricao(endereco.getDescricao());
-        enderecoTO.setNumero(endereco.getNumero());
-
-        ClienteTO clienteTO = new ClienteTO();
-        clienteTO.setContatos(contatoTOs);
-        clienteTO.setEndereco(enderecoTO);
-        clienteTO.setCpf(cliente.getCpf());
-        clienteTO.setEmail(cliente.getEmail());
-        clienteTO.setNome(cliente.getNome());
-
-        clienteTO.setAssinaturas(cliente.getAssinaturas()
-                .stream()
-                .map(assinatura -> {
-                    ServicoTO servicoTO = new ServicoTO();
-                    servicoTO.setDescricao(assinatura.getServico().getDescricao());
-                    servicoTO.setValor(assinatura.getServico().getValor());
-                    AssinaturaTO assinaturaTO = new AssinaturaTO();
-                    assinaturaTO.setAniversario(assinatura.getAniversario());
-                    assinaturaTO.setStatus(assinatura.getStatus().name());
-                    assinaturaTO.setServicoTO(servicoTO);
-                    return assinaturaTO;
-                }).collect(toList()));
-
-        return clienteTO;
-    }
-
 }

@@ -3,7 +3,6 @@ package com.carlosesc.recsystem.controller.cliente;
 import com.carlosesc.recsystem.controller.cliente.facade.ClienteServiceFacade;
 import com.carlosesc.recsystem.controller.cliente.facade.to.ClienteTO;
 import com.carlosesc.recsystem.controller.cliente.facade.to.CriarClienteTO;
-import com.carlosesc.recsystem.entity.cliente.Cliente;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

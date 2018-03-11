@@ -3,9 +3,7 @@ package com.carlosesc.recsystem.service;
 import com.carlosesc.recsystem.entity.cliente.Cliente;
 import com.carlosesc.recsystem.entity.cliente.ClienteRepository;
 import com.carlosesc.recsystem.entity.servico.Servico;
-import com.carlosesc.recsystem.service.exception.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.List;

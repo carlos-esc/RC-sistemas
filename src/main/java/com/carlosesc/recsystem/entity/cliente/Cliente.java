@@ -4,7 +4,6 @@ import com.carlosesc.recsystem.entity.EntityClass;
 import com.carlosesc.recsystem.entity.assinatura.Assinatura;
 import com.carlosesc.recsystem.entity.servico.Servico;
 import lombok.AccessLevel;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 

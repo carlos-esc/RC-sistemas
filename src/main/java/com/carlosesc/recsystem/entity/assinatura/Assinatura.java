@@ -1,18 +1,14 @@
 package com.carlosesc.recsystem.entity.assinatura;
 
 import com.carlosesc.recsystem.entity.EntityClass;
-import com.carlosesc.recsystem.entity.cliente.Cliente;
 import com.carlosesc.recsystem.entity.servico.Servico;
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.*;
-import org.springframework.data.annotation.CreatedDate;
-import org.springframework.data.annotation.LastModifiedDate;
+import lombok.AccessLevel;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
-import java.util.Date;
 
 @Entity
 @Data
